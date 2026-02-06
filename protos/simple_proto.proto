@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+package simple_proto;
+
+message Foo {
+    int64 bar; 
+}
