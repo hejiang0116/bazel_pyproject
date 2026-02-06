@@ -1,0 +1,10 @@
+load("@rules_python//python:defs.bzl", "py_binary")
+
+py_binary(
+    name = "main",           # This is the name you use to run it
+    srcs = ["main.py"],          # The file is in the same folder as this BUILD file
+    main = "main.py",            # Explicitly tell Bazel this is the starting script
+    deps = [
+        "//protos:simple_py_proto", # Link to your protos in the other folder
+    ],
+)

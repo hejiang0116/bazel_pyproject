@@ -1,0 +1,23 @@
+# MODULE.bazel
+module(
+    name = "my_xla_experiment",
+    version = "1.0",
+)
+
+# 1. Pull in Python support
+bazel_dep(name = "rules_python", version = "0.31.0")
+bazel_dep(name = "rules_ml_toolchain", version = "")
+
+# 2. Pull in Protocol Buffer support
+bazel_dep(name = "rules_proto", version = "6.0.0-rc1")
+
+# 3. Pull in XLA (This is the heavy dependency)
+bazel_dep(name = "xla", version = "0.0.0")
+git_override(
+    module_name = "rules_ml_toolchain",
+    remote = "https://github.com/openxla/xla.git",
+    # IMPORTANT: Point this to the same commit/branch as your XLA override
+    branch = "main", 
+    # This module usually lives in a specific subdirectory inside XLA
+    strip_prefix = "third_party/ml_toolchain", 
+)
