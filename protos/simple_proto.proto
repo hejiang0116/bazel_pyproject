@@ -2,6 +2,9 @@ syntax = "proto3";
 
 package simple_proto;
 
-message Foo {
-    int64 bar; 
+import "xla/xla_data.proto";
+
+message XLAData {
+    xla.OpSharding sharding;
+    xla.Layout layout; 
 }

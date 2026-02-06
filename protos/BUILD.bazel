@@ -1,0 +1,14 @@
+proto_library(
+    name = "simple_proto",
+    srcs = ["simple_proto.proto"],
+    deps = [
+        # This is the magic link to the XLA repository
+        "@xla//xla:xla_data_proto",
+    ],
+)
+
+# Generate Python code from your custom proto
+py_proto_library(
+    name = "simple_py_proto",
+    deps = [":simple_proto"],
+)
