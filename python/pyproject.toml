@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel", "bazelisk"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "my-xla-project-experiment"  # Must be unique on PyPI
+version = "0.1.0"
+description = "XLA-powered project with shared Bazel protos"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "protobuf>=5.0.0",
+    "numpy",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["protos*", "python*"]
