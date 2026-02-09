@@ -1,17 +1,20 @@
-load("@rules_proto//proto:defs.bzl", "proto_library")
-load("@rules_python//python:proto.bzl", "py_proto_library")
+load("@protobuf//bazel:proto_library.bzl", "proto_library")
+load("@protobuf//bazel:py_proto_library.bzl", "py_proto_library")
+
 
 proto_library(
     name = "simple_proto",
     srcs = ["simple_proto.proto"],
     deps = [
-        # This is the magic link to the XLA repository
         "@xla//xla:xla_data_proto",
     ],
+    visibility = ["//visibility:public"],
 )
 
 # Generate Python code from your custom proto
 py_proto_library(
     name = "simple_py_proto",
     deps = [":simple_proto"],
+    visibility = ["//visibility:public"],
+
 )

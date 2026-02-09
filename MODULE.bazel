@@ -4,24 +4,65 @@ module(
     version = "1.0",
 )
 
-bazel_dep(name = "rules_python", version = "0.31.0")
-bazel_dep(name = "rules_proto", version = "6.0.0-rc1")
-bazel_dep(name = "rules_cc", version = "0.0.9")
-bazel_dep(name = "rules_license", version = "0.0.7")
+bazel_dep(name = "rules_python", version = "1.6.1")
+bazel_dep(name = "protobuf", version = "29.0")
+bazel_dep(name = "rules_cc", version = "0.0.13")
+bazel_dep(name = "platforms", version = "1.0.0")
 
-bazel_dep(name = "xla", version = "0.0.0")
 
-# 2. Tell Bazel where to actually get that dependency
-git_override(
-    module_name = "xla",
-    remote = "https://github.com/openxla/xla.git",
-    branch = "main", 
-)
 
-# 3. Repeat for rules_ml_toolchain (the one that caused your previous error)
-bazel_dep(name = "rules_ml_toolchain", version = "0.0.0")
-git_override(
+bazel_dep(name = "rules_ml_toolchain")
+archive_override(
     module_name = "rules_ml_toolchain",
-    remote = "https://github.com/google-ml-infra/rules_ml_toolchain.git",
-    branch = "main",
+    integrity = "sha256-oeeg2T6kykUWIsmsdk6UMiWLG0/jXsNSZmVIXypeDHg=",
+    strip_prefix = "rules_ml_toolchain-4414c8de64a0e3723a24097092d8c8c4b771e96a",
+    urls = ["https://github.com/google-ml-infra/rules_ml_toolchain/archive/4414c8de64a0e3723a24097092d8c8c4b771e96a.tar.gz"],
 )
+
+bazel_dep(name = "xla")
+archive_override(
+    module_name = "xla",
+    integrity = "sha256-OteZ/V6Py1zPWbW2Dn2n0nGdAdtERSiohWuNSdV+gBA=",
+    strip_prefix = "xla-721dcddd667ae0867be72346d0906185702edc83",
+    urls = ["https://github.com/openxla/xla/archive/721dcddd667ae0867be72346d0906185702edc83.tar.gz"],
+)
+
+# TODO: upstream, otherwise we have to duplicate the patches in jax
+single_version_override(
+    module_name = "grpc",
+    patch_strip = 1,
+    patch_cmds = [
+        # 1. Add 'plugin_flags = [],' to the function signature
+        "sed -i 's/grpc_only = False,/grpc_only = False,\\n        plugin_flags = [],/' bazel/cc_grpc_library.bzl",
+        # 2. Pass 'flags = plugin_flags,' into the internal call
+        "sed -i 's/allow_deprecated = allow_deprecated,/allow_deprecated = allow_deprecated,\\n            flags = plugin_flags,/' bazel/cc_grpc_library.bzl",
+    ],
+)
+
+
+### Toolchains
+rocm = use_extension("@xla//third_party/extensions:rocm_configure.bzl", "rocm_configure_ext")
+use_repo(rocm, "local_config_rocm")
+
+remote_execution_configure = use_extension("@xla//third_party/extensions:remote_execution_configure.bzl", "remote_execution_configure_ext")
+use_repo(remote_execution_configure, "local_config_remote_execution")
+
+python = use_extension("@rules_python//python/extensions:python.bzl", "python")
+python.defaults(
+    # The environment variable takes precedence if set.
+    python_version = "3.11",
+    python_version_env = "HERMETIC_PYTHON_VERSION",
+)
+python.toolchain(python_version = "3.11")
+python.toolchain(python_version = "3.12")
+python.toolchain(python_version = "3.13")
+python.toolchain(python_version = "3.14")
+
+
+register_toolchains("@rules_ml_toolchain//cc:linux_x86_64_linux_x86_64")
+
+
+
+
+
+

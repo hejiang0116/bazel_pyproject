@@ -5,11 +5,21 @@ from protos import simple_proto_pb2
 from xla import xla_data_pb2
 
 
-def create_simple_proto():
-    p = simple_proto_pb2.XLAData()
+def create_xla_data():
+    p = simple_proto_pb2.XlaData()
+    # sharding.type = xla_data_pb2.OpSharding.Type.OTHER
+    p.sharding.type = xla_data_pb2.OpSharding.Type.OTHER
     return p
 
+def create_id(name: str = 'foo', age: int = 5):
+    id = simple_proto_pb2.ID()
+    id.name = name
+    id.age = age
+    return id
+
 if __name__ == "__main__":
-    msg = create_simple_proto()
+    id = create_id()
+    xla_data = create_xla_data()
     print("--- Experiment Metadata ---")
-    print(msg)
+    print(id)
+    print("xla data is: ", xla_data)

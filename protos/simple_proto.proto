@@ -4,7 +4,12 @@ package simple_proto;
 
 import "xla/xla_data.proto";
 
-message XLAData {
-    xla.OpSharding sharding;
-    xla.Layout layout; 
+message XlaData {
+    xla.OpSharding sharding = 1;
+    xla.LayoutProto layout = 2; 
+}
+
+message ID {
+    string name = 1;
+    int32 age = 2;
 }
