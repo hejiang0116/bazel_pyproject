@@ -4,20 +4,24 @@ module(
     version = "1.0",
 )
 
-# 1. Pull in Python support
 bazel_dep(name = "rules_python", version = "0.31.0")
-bazel_dep(name = "rules_ml_toolchain", version = "")
-
-# 2. Pull in Protocol Buffer support
 bazel_dep(name = "rules_proto", version = "6.0.0-rc1")
+bazel_dep(name = "rules_cc", version = "0.0.9")
+bazel_dep(name = "rules_license", version = "0.0.7")
 
-# 3. Pull in XLA (This is the heavy dependency)
 bazel_dep(name = "xla", version = "0.0.0")
+
+# 2. Tell Bazel where to actually get that dependency
+git_override(
+    module_name = "xla",
+    remote = "https://github.com/openxla/xla.git",
+    branch = "main", 
+)
+
+# 3. Repeat for rules_ml_toolchain (the one that caused your previous error)
+bazel_dep(name = "rules_ml_toolchain", version = "0.0.0")
 git_override(
     module_name = "rules_ml_toolchain",
-    remote = "https://github.com/openxla/xla.git",
-    # IMPORTANT: Point this to the same commit/branch as your XLA override
-    branch = "main", 
-    # This module usually lives in a specific subdirectory inside XLA
-    strip_prefix = "third_party/ml_toolchain", 
+    remote = "https://github.com/google-ml-infra/rules_ml_toolchain.git",
+    branch = "main",
 )
