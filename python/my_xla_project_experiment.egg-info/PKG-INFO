@@ -1,0 +1,17 @@
+Metadata-Version: 2.4
+Name: my-xla-project-experiment
+Version: 0.1.0
+Summary: XLA-powered project with shared Bazel protos
+Author: Your Name
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+Requires-Dist: protobuf>=5.0.0
+Requires-Dist: numpy
+Dynamic: author
+
+# Project A
+An XLA-optimized Python package.
+
+## Installation
+```bash
+pip install my-unique-xla-project-a

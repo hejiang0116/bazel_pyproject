@@ -1,6 +1,7 @@
 [build-system]
-requires = ["setuptools>=61.0", "wheel", "bazelisk"]
+requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
+
 
 [project]
 name = "my-xla-project-experiment"  # Must be unique on PyPI
@@ -13,6 +14,13 @@ dependencies = [
     "numpy",
 ]
 
-[tool.setuptools.packages.find]
-where = ["."]
-include = ["protos*", "python*"]
+
+[tool.setuptools]
+# Force setuptools to look for these specific folders
+package-dir = {"" = "."}
+
+[tool.setuptools.package-data]
+# Ensure the generated python files are treated as data if they aren't standard .py
+"*" = ["*.py", "*.pyi"]
+
+
