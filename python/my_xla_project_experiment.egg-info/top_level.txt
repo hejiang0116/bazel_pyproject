@@ -1,2 +1,1 @@
-main
-protos
+my_xla_project_experiment

@@ -5,12 +5,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "my-xla-project-experiment"  # Must be unique on PyPI
-version = "0.1.0"
+version = "0.1.12"
 description = "XLA-powered project with shared Bazel protos"
 readme = "README.md"
 requires-python = ">=3.9"
 dependencies = [
-    "protobuf>=5.0.0",
+    "protobuf>=6.32.1",
     "numpy",
 ]
 

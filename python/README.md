@@ -3,4 +3,4 @@ An XLA-optimized Python package.
 
 ## Installation
 ```bash
-pip install my-unique-xla-project-a
+pip install my-xla-project-experiment

@@ -1,12 +1,15 @@
 README.md
+__init__.py
 main.py
 pyproject.toml
 setup.py
+./__init__.py
 ./main.py
-./protos/__init__.py
+./setup.py
 my_xla_project_experiment.egg-info/PKG-INFO
 my_xla_project_experiment.egg-info/SOURCES.txt
 my_xla_project_experiment.egg-info/dependency_links.txt
 my_xla_project_experiment.egg-info/requires.txt
 my_xla_project_experiment.egg-info/top_level.txt
 protos/__init__.py
+xla/__init__.py
